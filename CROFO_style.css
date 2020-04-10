@@ -1,0 +1,42 @@
+body{
+    margin: 0;
+}
+
+.nav-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: darkcyan;
+    list-style-type: none;
+}
+
+.nav-item {
+    padding: 15px;
+    cursor: pointer;
+}
+
+.nav-item a {
+    text-align: center;
+    text-decoration: none;
+    color: white;
+}
+
+.nav-item:nth-child(1) {
+    background-color: black;
+}
+
+.nav-item:hover:nth-child(1) {
+    background-color: black;
+}
+
+.nav-item:hover {
+    background-color: darkgray;
+}
+
+img.absolute {
+    position : absolute;
+    left: 0%;
+    top: 0%;
+}
