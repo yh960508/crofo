@@ -52,3 +52,8 @@ th, td {
     border: 1px solid lightgray;
     text-align : center;
 }
+
+#buttonTd {
+    border: 1px solid white;
+    text-align : right;
+}
