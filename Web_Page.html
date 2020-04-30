@@ -3,6 +3,14 @@
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script type="text/javascript">
+    function liIntroduce() {
+      $("#introduce").css("display","block");
+      $("#cctvSelectTable").css("display","none");
+    }
+    function liCctvSelectTable() {
+      $("#introduce").css("display","none");
+      $("#cctvSelectTable").css("display","block");
+    }
     function checkAll() {
       if($('#allCheckbox').prop("checked")){
         $("input[class=inputTop4]").prop("checked", true);
@@ -34,17 +42,16 @@
 
   <nav>
     <ul class = "nav-container">
-      <li class = "nav-item"> <a href = "">CROFO 소개</a></li>
-      <li class = "nav-item"> <a href = "">CCTV SAMPLE</a></li>
+      <li class = "nav-item" onclick = "liIntroduce()"> <a href = "#">CROFO 소개</a></li>
+      <li class = "nav-item" onclick = "liCctvSelectTable()"> <a href = "#" >CCTV SAMPLE</a></li>
     </ul>
   </nav>
-  <div class = "introduce">
+  <div id = "introduce">
     <h1>CROFO란?</h1>
     <p>CROFO는 Cross와 Infomation를 합성하여 만든 단어로, 교차로에서 운전자가 보기 어려운 사각지대의 정보를 운전자에게 앱으로 제공함으로서 사고를 예방하기 위해 만들어졌다.</p>
-
   </div>
 
-  <table class = "cctvSelectTable">
+  <table id = "cctvSelectTable">
     <colgroup>
       <col width = "25px;"/>
       <col width = "600px;"/>

@@ -39,21 +39,23 @@ img.absolute {
     left: 0%;
     top: 0%;
 }
-.introduce {
+#introduce {
     margin: 20px;
+    display: block;
 }
 
 
-.cctvSelectTable {
+#cctvSelectTable {
+    margin-top : 20px;
     margin-left : 20px;
-    border: 1px solid gray;
+    display: none;
 }
 th, td {
     border: 1px solid lightgray;
-    text-align : center;
+    text-align: center;
 }
 
 #buttonTd {
     border: 1px solid white;
-    text-align : right;
+    text-align: right;
 }
