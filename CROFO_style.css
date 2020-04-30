@@ -1,5 +1,5 @@
 body{
-    margin: 0;
+    margin: 0px;
 }
 
 .nav-container {
@@ -34,9 +34,21 @@ body{
 .nav-item:hover {
     background-color: darkgray;
 }
-
 img.absolute {
     position : absolute;
     left: 0%;
     top: 0%;
+}
+.introduce {
+    margin: 20px;
+}
+
+
+.cctvSelectTable {
+    margin-left : 20px;
+    border: 1px solid gray;
+}
+th, td {
+    border: 1px solid lightgray;
+    text-align : center;
 }

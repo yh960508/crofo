@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script type="text/javascript">
+    function checkAll() {
+      if($('#allCheckbox').prop("checked")){
+        $("input[class=inputTop4]").prop("checked", true);
+        $("tr[class=trTop4]").css("backgroundColor", "lightgray");
+      }
+      else{
+        $("input[class=inputTop4]").prop("checked", false);
+        $("tr[class=trTop4]").css("backgroundColor", "white");
+      }
+    }
+    function checkColor(it) {
+      tr = it.parentNode.parentNode;
+      tr.style.backgroundColor = (it.checked)? "lightgray" : "white";
+    }
+  </script>
+
+
 <title>CROFO</title>
 <link rel = "stylesheet" href="CROFO_style.css">
 </head>
@@ -19,6 +38,40 @@
       <li class = "nav-item"> <a href = "">CCTV SAMPLE</a></li>
     </ul>
   </nav>
+  <div class = "introduce">
+    <h1>CROFO란?</h1>
+    <p>CROFO는 Cross와 Infomation를 합성하여 만든 단어로, 교차로에서 운전자가 보기 어려운 사각지대의 정보를 운전자에게 앱으로 제공함으로서 사고를 예방하기 위해 만들어졌다.</p>
+
+  </div>
+
+  <table class = "cctvSelectTable">
+    <colgroup>
+      <col width = "25px;"/>
+      <col width = "600px;"/>
+    </colgroup>
+    <th><input type='checkbox' id = "allCheckbox" onclick = "checkAll()"/></th>
+    <th>CCTV영상명</th>
+    <tr class = "trTop4">
+      <td><input type='checkbox' class = "inputTop4" onclick = "checkColor(this)"/></td>
+      <td></td>
+    </tr>
+    <tr class = "trTop4">
+      <td><input type='checkbox' class = "inputTop4" onclick = "checkColor(this)"/></td>
+      <td></td>
+    </tr>
+    <tr class = "trTop4">
+      <td><input type='checkbox' class = "inputTop4" onclick = "checkColor(this)"/></td>
+      <td></td>
+    </tr>
+    <tr class = "trTop4">
+      <td><input type='checkbox' class = "inputTop4" onclick = "checkColor(this)"/></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><input type='checkbox' onclick = "checkColor(this)"/></td>
+      <td></td>
+    </tr>
+  </table>
   
 </body>
 </html>
