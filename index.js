@@ -5,6 +5,7 @@ let bodyParser = require('body-parser');
 let path = require('path');
 
 let loginRouter = require('./router/login');
+let mainRouter = require('./router/main');
 
 let server = http.createServer(app);
 app.use(bodyParser.urlencoded({
@@ -19,3 +20,4 @@ server.listen(8080, function() {
 app.use(express.static(path.join('public', '/')));
 
 app.use('/login', loginRouter);
+app.use('/', mainRouter);
