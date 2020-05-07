@@ -53,6 +53,34 @@ router.post('/',
     })
 );
 
+/*
+//sing up 
+router.post('/reg', function(request, response) {
+    hasher({password:request.body.pw}, function(error, pass, salt, hash) {
+        let user = {
+            id: request.body.id,
+            password: hash,
+            salt: salt
+        };
+        let sql = 'insert into login set ?';
+        conn.query(sql, user, function(error) {
+            if (error) {
+                console.log(error);
+            } else {
+                fs.readFile('./Web_Page.html', function(error, data) {
+                    if(error) {
+                        console.log(error);
+                    } else {
+                        response.writeHead(200, {'Content-Type': 'text/html'});
+                        response.end(data);
+                    }
+                });
+            }
+        });
+    });
+});
+*/
+
 passport.use(new LocalStrategy({
         usernameField: 'id',
         passwordField: 'pw'
