@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="utf-8">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script type="text/javascript">
-
     // 체크된거 색변경
     var checkedCount = 0; // 체크된박스 숫자
-    var checkedList = []; // 체크된영상 이름명
+    var checkedList = []; // 체크된 영상명
+    var videoNum = 0;
+    var pageNum = 1;
+    let nowPage = 0; // 동영상 목록 현재 페이지(숫자는 0으로 지정하고 너네가 출력할 때는 +1 해서 화면 출력하면 될 듯)
+    var page10Unit= 0; // 10페이지 단위
 
-    var videoNum = 250; // 동영상 개수
-    var pageNum; // 페이지 개수
-    var page10Unit= 0; // 
+    $(document).ready(function () {
+      if(videoNum % 10 == 0){
+        pageNum = parseInt(videoNum / 10);
+      }
+      else{
+        pageNum = parseInt(videoNum / 10) + 1;
+      }
+      getVideoAmount();
+      getVideoList();
+    });
 
     function liIntroduce() {
       $("#introduce").css("display", "block");
@@ -80,23 +89,14 @@
       $("#tr"+index).css('backgroundColor','lightgray');
     }
 
-    let nowPage = 0; // 동영상 목록 현재 페이지(숫자는 0으로 지정하고 너네가 출력할 때는 +1 해서 화면 출력하면 될 듯)
-    $(document).ready(function () {
-      if(videoNum % 10 == 0){
-        pageNum = parseInt(videoNum / 10);
-      }
-      else{
-        pageNum = parseInt(videoNum / 10) + 1;
-      }
-      getVideoAmount();
-      getVideos();
-    });
+
     function getVideoAmount() {
       $.ajax({
         type: "GET",
         url: "/getVideoAmount",
         success: function (data) {
-          alert(data.amount);
+          videoNum = data.amount;
+          pageNum = (videoNum / 10) + 1;
         }
       });
     }
@@ -148,8 +148,8 @@
   </script>
 
 
-  <title>CROFO</title>
-  <link rel="stylesheet" href="./public/style/main_style.css">
+<title>CROFO</title>
+<link rel="stylesheet" href="./style/main_style.css">
 </head>
 
 <body>
@@ -159,7 +159,7 @@
       CROFO TEST WEB PAGE
     </h1>
   </header>
-  <img src="./public/images/crofo_logo.png" class="absolute" alt="CROFO LOGO" style="width:200px;height:100px;">
+  <img src="./images/crofo_logo.png" class="absolute" alt="CROFO LOGO" style="width:200px;height:100px;">
 
   <nav>
     <ul class="nav-container">
