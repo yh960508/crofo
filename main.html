@@ -26,6 +26,146 @@
       tr = it.parentNode.parentNode;
       tr.style.backgroundColor = (it.checked)? "lightgray" : "white";
     }
+    // Paging util 정의
+    var PageUtil = function(){ // 페이지 처리 함수
+      var totalCnt = 100; // 총 건수
+      var pageRows = 10; // 한 페이지에 출력될 항목 갯수
+      var curPage = 1; // 현재 페이지
+      var disPagepCnt = 1;// 화면출력 페이지수
+      var totalPage; // 총 페이지 수
+
+      this.setTotalPage = function(){
+        this.totalPage = parseInt((this.totalCnt/this.pageRows)) + (this.totalCnt%this.pageRows>0 ? 1:0);
+      }
+
+      // 이전 페이지 넘버
+      this.getPrev = function(){
+        var prev = 0;
+
+        if(this.curPage > 1)
+            prev = this.curPage - 1;
+        else
+            prev = 1;
+
+        return prev;
+      }
+
+      // 다음 페이지 넘버
+      this.getNext = function(){
+        var next = 0;
+
+        if(this.curPage < this.totalPage)
+            next = this.curPage + 1;
+        else
+            next = this.totalPage;
+
+        return next;
+      }
+
+      // 이전 페이지를 현재페이지로 설정, 이전 페이지 얻기
+      this.getPrevPage = function(){
+        var prevPage = 0;
+        var curPos = (parseInt((this.curPage/this.disPagepCnt))+(this.curPage%this.disPagepCnt>0 ? 1:0));
+
+        if(curPos>1){
+          prevPage = parseInt((curPos-1))*this.disPagepCnt;
+        }
+
+        return prevPage;
+      }
+
+      // 다음 페이지를 현재페이지로 설정, 이전 페이지 얻기
+      this.getNextPage = function(){
+        var nextPage    = 0;
+        var curPos  = parseInt((parseInt((this.curPage/this.disPagepCnt))+(this.curPage%this.disPagepCnt >0 ? 1:0)));
+
+        if((curPos*this.disPagepCnt+1) <= this.totalPage)
+        {
+          nextPage    = curPos*this.disPagepCnt+1;
+        }
+        if( this.totalPage >= nextPage )
+          return nextPage;
+        else
+          return this.totalPage;
+      }
+
+      // 
+      this.Drow = function(){
+        var sb = '';
+        var start = ((parseInt((this.curPage/this.disPagepCnt))+(this.curPage%this.disPagepCnt>0 ? 1:0)) * this.disPagepCnt - (this.disPagepCnt-1));
+        var end = ((parseInt((this.curPage/this.disPagepCnt))+(this.curPage%this.disPagepCnt>0 ? 1:0)) * this.disPagepCnt);
+
+        if(end > this.totalPage)
+          end = this.totalPage;
+
+        if(this.curPage > this.disPagepCnt){
+          sb += "&nbsp;&nbsp;<a href='javascript:prev_page();'>◀◀</a>&nbsp;&nbsp;";
+        }
+
+        if(this.getPrev() < this.curPage){
+          sb += "&nbsp;&nbsp;<a href='javascript:prev();'>◀</a>&nbsp;&nbsp;";
+        }
+
+        for(var i=start; i<=end; i++){
+          if(i==this.curPage){
+            sb += "&nbsp;&nbsp;<b>"+i+"</b>&nbsp;&nbsp;";
+          }
+          else{
+            sb += "&nbsp;&nbsp;<a href='javascript:goPage("+i+");'>"+i+"</a>&nbsp;&nbsp;";
+          }
+        }
+        if(this.curPage < this.getNext()){
+            sb += "&nbsp;&nbsp;<a href='javascript:next();'>▶</a>&nbsp;&nbsp;";
+        }
+
+        if(this.totalPage > this.getNextPage() && this.getNextPage() != 0 ){
+            sb += "&nbsp;&nbsp;<a href='javascript:next_page();'>▶▶</a>&nbsp;&nbsp;";
+        }
+
+        return sb;
+      }
+
+      // 사용법
+      var util = new PageUtil();
+
+      util.totalCnt = 100; //게시물의 총 건수
+      util.pageRows = 10; // 한번에 출력될 게시물 수
+      util.disPagepCnt= 10; //화면 출력 페이지 수
+
+      function fn_DrowPageNumber(){
+        parent.document.getElementById('page').innerHTML  = util.Drow();
+      }
+
+      function goPage(pageNo){
+        util.curPage = pageNo;  
+        util.setTotalPage();
+        fn_DrowPageNumber();
+      }
+
+      function next_page(){
+        util.curPage = util.getNextPage();
+        util.setTotalPage();
+        fn_DrowPageNumber();
+      }
+
+      function next(){
+        util.curPage = util.getNext();
+        util.setTotalPage();
+        fn_DrowPageNumber();
+      }
+
+      function prev_page(){
+        util.curPage = util.getNextPage();
+        util.setTotalPage();
+        fn_DrowPageNumber();
+      }
+
+      function prev(){
+        util.curPage = util.getNext();
+        util.setTotalPage();
+        fn_DrowPageNumber();
+      }
+    }
   </script>
 
 
@@ -55,33 +195,85 @@
   <table id = "cctvSelectTable">
     <colgroup>
       <col width = "25px;"/>
+      <col width = "100px"/>
       <col width = "600px;"/>
     </colgroup>
     <th><input type='checkbox' id = "allCheckbox" onclick = "checkAll()"/></th>
+    <th>날짜</th>
     <th>CCTV영상명</th>
     <tr class = "trTop4">
       <td><input type='checkbox' class = "inputTop4" onclick = "checkColor(this)"/></td>
       <td></td>
-    </tr>
-    <tr class = "trTop4">
-      <td><input type='checkbox' class = "inputTop4" onclick = "checkColor(this)"/></td>
       <td></td>
     </tr>
     <tr class = "trTop4">
       <td><input type='checkbox' class = "inputTop4" onclick = "checkColor(this)"/></td>
       <td></td>
+      <td></td>
     </tr>
     <tr class = "trTop4">
       <td><input type='checkbox' class = "inputTop4" onclick = "checkColor(this)"/></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr class = "trTop4">
+      <td><input type='checkbox' class = "inputTop4" onclick = "checkColor(this)"/></td>
+      <td></td>
       <td></td>
     </tr>
     <tr>
       <td><input type='checkbox' onclick = "checkColor(this)"/></td>
       <td></td>
+      <td></td>
     </tr>
     <tr>
-      <td id="buttonTd" colspan="2">
+      <td><input type='checkbox' onclick = "checkColor(this)"/></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><input type='checkbox' onclick = "checkColor(this)"/></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><input type='checkbox' onclick = "checkColor(this)"/></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><input type='checkbox' onclick = "checkColor(this)"/></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><input type='checkbox' onclick = "checkColor(this)"/></td>
+      <td></td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <td class="elseTd" colspan="3">
         <input type ="button" value="load"/>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="elseTd" colspan="3">
+        <ul class = "pageNum">  
+          <li><a href="#" style="margin-left:200px;" onclick="prev_page()">◀</a></li>  
+          <li><a class = "numBox" href="#">1</a></li>  
+          <li><a class = "numBox" href="#">2</a></li>  
+          <li><a class = "numBox" href="#">3</a></li>  
+          <li><a class = "numBox" href="#">4</a></li>  
+          <li><a class = "numBox" href="#">5</a></li>  
+          <li><a class = "numBox" href="#">6</a></li>  
+          <li><a class = "numBox" href="#">7</a></li>  
+          <li><a class = "numBox" href="#">8</a></li>  
+          <li><a class = "numBox" href="#">9</a></li>  
+          <li><a class = "numBox" href="#">10</a></li> 
+          <li><a href="#" onclick="next_page()">▶</a></li>   
+        </ul>
       </td>
     </tr>
   </table>
