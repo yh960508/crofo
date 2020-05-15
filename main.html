@@ -1,177 +1,112 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script type="text/javascript">
+
+    // 체크된거 색변경
+    var checkedCount = 0; // 체크된박스 숫자
+
     function liIntroduce() {
-      $("#introduce").css("display","block");
-      $("#cctvSelectTable").css("display","none");
+      $("#introduce").css("display", "block");
+      $("#cctvSelectTable").css("display", "none");
+      $("#videoDiv").css("display","none")
     }
+
     function liCctvSelectTable() {
-      $("#introduce").css("display","none");
-      $("#cctvSelectTable").css("display","block");
+      $("#introduce").css("display", "none");
+      $("#cctvSelectTable").css("display", "block");
+      $("#videoDiv").css("display","none")
     }
-    function checkAll() {
-      if($('#allCheckbox').prop("checked")){
-        $("input[class=inputTop4]").prop("checked", true);
-        $("tr[class=trTop4]").css("backgroundColor", "lightgray");
+
+    function loadVideo(){
+      if(checkedCount == 0){
+        alert("동영상 최대개수 초과(최대: 4개)");
       }
       else{
-        $("input[class=inputTop4]").prop("checked", false);
-        $("tr[class=trTop4]").css("backgroundColor", "white");
+        $("#introduce").css("display", "none");
+        $("#cctvSelectTable").css("display", "none");
+        $("#videoDiv").css("display","block")
       }
     }
+
     function checkColor(it) {
       tr = it.parentNode.parentNode;
-      tr.style.backgroundColor = (it.checked)? "lightgray" : "white";
-    }
-    // Paging util 정의
-    var PageUtil = function(){ // 페이지 처리 함수
-      var totalCnt = 100; // 총 건수
-      var pageRows = 10; // 한 페이지에 출력될 항목 갯수
-      var curPage = 1; // 현재 페이지
-      var disPagepCnt = 1;// 화면출력 페이지수
-      var totalPage; // 총 페이지 수
-
-      this.setTotalPage = function(){
-        this.totalPage = parseInt((this.totalCnt/this.pageRows)) + (this.totalCnt%this.pageRows>0 ? 1:0);
-      }
-
-      // 이전 페이지 넘버
-      this.getPrev = function(){
-        var prev = 0;
-
-        if(this.curPage > 1)
-            prev = this.curPage - 1;
-        else
-            prev = 1;
-
-        return prev;
-      }
-
-      // 다음 페이지 넘버
-      this.getNext = function(){
-        var next = 0;
-
-        if(this.curPage < this.totalPage)
-            next = this.curPage + 1;
-        else
-            next = this.totalPage;
-
-        return next;
-      }
-
-      // 이전 페이지를 현재페이지로 설정, 이전 페이지 얻기
-      this.getPrevPage = function(){
-        var prevPage = 0;
-        var curPos = (parseInt((this.curPage/this.disPagepCnt))+(this.curPage%this.disPagepCnt>0 ? 1:0));
-
-        if(curPos>1){
-          prevPage = parseInt((curPos-1))*this.disPagepCnt;
+      if (it.checked) {
+        if (checkedCount < 4) {
+          tr.style.backgroundColor = "lightgray";
+          checkedCount++;
         }
-
-        return prevPage;
       }
-
-      // 다음 페이지를 현재페이지로 설정, 이전 페이지 얻기
-      this.getNextPage = function(){
-        var nextPage    = 0;
-        var curPos  = parseInt((parseInt((this.curPage/this.disPagepCnt))+(this.curPage%this.disPagepCnt >0 ? 1:0)));
-
-        if((curPos*this.disPagepCnt+1) <= this.totalPage)
-        {
-          nextPage    = curPos*this.disPagepCnt+1;
+      else {
+        if (checkedCount > 0) {
+          tr.style.backgroundColor = "white";
+          checkedCount--;
         }
-        if( this.totalPage >= nextPage )
-          return nextPage;
-        else
-          return this.totalPage;
-      }
-
-      // 
-      this.Drow = function(){
-        var sb = '';
-        var start = ((parseInt((this.curPage/this.disPagepCnt))+(this.curPage%this.disPagepCnt>0 ? 1:0)) * this.disPagepCnt - (this.disPagepCnt-1));
-        var end = ((parseInt((this.curPage/this.disPagepCnt))+(this.curPage%this.disPagepCnt>0 ? 1:0)) * this.disPagepCnt);
-
-        if(end > this.totalPage)
-          end = this.totalPage;
-
-        if(this.curPage > this.disPagepCnt){
-          sb += "&nbsp;&nbsp;<a href='javascript:prev_page();'>◀◀</a>&nbsp;&nbsp;";
-        }
-
-        if(this.getPrev() < this.curPage){
-          sb += "&nbsp;&nbsp;<a href='javascript:prev();'>◀</a>&nbsp;&nbsp;";
-        }
-
-        for(var i=start; i<=end; i++){
-          if(i==this.curPage){
-            sb += "&nbsp;&nbsp;<b>"+i+"</b>&nbsp;&nbsp;";
-          }
-          else{
-            sb += "&nbsp;&nbsp;<a href='javascript:goPage("+i+");'>"+i+"</a>&nbsp;&nbsp;";
-          }
-        }
-        if(this.curPage < this.getNext()){
-            sb += "&nbsp;&nbsp;<a href='javascript:next();'>▶</a>&nbsp;&nbsp;";
-        }
-
-        if(this.totalPage > this.getNextPage() && this.getNextPage() != 0 ){
-            sb += "&nbsp;&nbsp;<a href='javascript:next_page();'>▶▶</a>&nbsp;&nbsp;";
-        }
-
-        return sb;
-      }
-
-      // 사용법
-      var util = new PageUtil();
-
-      util.totalCnt = 100; //게시물의 총 건수
-      util.pageRows = 10; // 한번에 출력될 게시물 수
-      util.disPagepCnt= 10; //화면 출력 페이지 수
-
-      function fn_DrowPageNumber(){
-        parent.document.getElementById('page').innerHTML  = util.Drow();
-      }
-
-      function goPage(pageNo){
-        util.curPage = pageNo;  
-        util.setTotalPage();
-        fn_DrowPageNumber();
-      }
-
-      function next_page(){
-        util.curPage = util.getNextPage();
-        util.setTotalPage();
-        fn_DrowPageNumber();
-      }
-
-      function next(){
-        util.curPage = util.getNext();
-        util.setTotalPage();
-        fn_DrowPageNumber();
-      }
-
-      function prev_page(){
-        util.curPage = util.getNextPage();
-        util.setTotalPage();
-        fn_DrowPageNumber();
-      }
-
-      function prev(){
-        util.curPage = util.getNext();
-        util.setTotalPage();
-        fn_DrowPageNumber();
       }
     }
+
+    function chkCount(obj) {
+      var chkbox = document.getElementsByName("chk");
+      var chkCnt = 0;
+
+      for (var i = 0; i < chkbox.length; i++) {
+        if (chkbox[i].checked) {
+          chkCnt++;
+        }
+      }
+
+      if (chkCnt > 4) {
+        alert("동영상 최대개수 초과(최대: 4개)");
+        obj.checked = false;
+        return false;
+      }
+    }
+
+    let nowPage = 0; // 동영상 목록 현재 페이지(숫자는 0으로 지정하고 너네가 출력할 때는 +1 해서 화면 출력하면 될 듯)
+    $(document).ready(function () {
+      getVideoAmount();
+      getVideos();
+    });
+    function getVideoAmount() {
+      $.ajax({
+        type: "GET",
+        url: "/getVideoAmount",
+        success: function (data) {
+          alert(data.amount);
+        }
+      });
+    }
+
+    function getVideos() {
+      $.ajax({
+        type: "GET",
+        url: "/getVideo/" + nowPage,
+        success: function (data) {
+          if (data[0].result == true) {
+            let len = data[0].length;
+            for (let i = 1; i <= len; i++) {
+              document.getElementById("dateList" + i).innerHTML = test[i].datatime;
+              document.getElementById("nameList" + i).innerHTML = test[i].name;
+            }
+          } else return;
+        }
+      });
+    }
+
+    // 페이징
+    var videoNum = 55;
+    var pageNum = (videoNum / 10) + 1;
+
   </script>
 
 
-<title>CROFO</title>
-<link rel = "stylesheet" href="./public/style/main_style.css">
+  <title>CROFO</title>
+  <link rel="stylesheet" href="./public/style/main_style.css">
 </head>
+
 <body>
   <header>
     <h1>
@@ -179,104 +114,155 @@
       CROFO TEST WEB PAGE
     </h1>
   </header>
-  <img src="./public/images/crofo_logo.png" class = "absolute" alt="CROFO LOGO" style="width:200px;height:100px;">
+  <img src="./public/images/crofo_logo.png" class="absolute" alt="CROFO LOGO" style="width:200px;height:100px;">
 
   <nav>
-    <ul class = "nav-container">
-      <li class = "nav-item" onclick = "liIntroduce()"> <a href = "#">CROFO 소개</a></li>
-      <li class = "nav-item" onclick = "liCctvSelectTable()"> <a href = "#" >CCTV SAMPLE</a></li>
+    <ul class="nav-container">
+      <li class="nav-item" onclick="liIntroduce()"> <a href="#">CROFO 소개</a></li>
+      <li class="nav-item" onclick="liCctvSelectTable()"> <a href="#">CCTV SAMPLE</a></li>
     </ul>
   </nav>
-  <div id = "introduce">
+  <div id="introduce">
     <h1>CROFO란?</h1>
     <p>CROFO는 Cross와 Infomation를 합성하여 만든 단어로, 교차로에서 운전자가 보기 어려운 사각지대의 정보를 운전자에게 앱으로 제공함으로서 사고를 예방하기 위해 만들어졌다.</p>
   </div>
 
-  <table id = "cctvSelectTable">
+  <table id="cctvSelectTable">
     <colgroup>
-      <col width = "25px;"/>
-      <col width = "100px"/>
-      <col width = "600px;"/>
+      <col width="25px;" />
+      <col width="100px" />
+      <col width="600px;" />
     </colgroup>
-    <th><input type='checkbox' id = "allCheckbox" onclick = "checkAll()"/></th>
+    <th></th>
     <th>날짜</th>
     <th>CCTV영상명</th>
-    <tr class = "trTop4">
-      <td><input type='checkbox' class = "inputTop4" onclick = "checkColor(this)"/></td>
-      <td></td>
-      <td></td>
+    <tr class="trTop4">
+      <td><input type='checkbox' name="chk" onclick="checkColor(this);chkCount(this)" /></td>
+      <td id="dateList1"></td>
+      <td id="nameList1"></td>
     </tr>
-    <tr class = "trTop4">
-      <td><input type='checkbox' class = "inputTop4" onclick = "checkColor(this)"/></td>
-      <td></td>
-      <td></td>
+    <tr class="trTop4">
+      <td><input type='checkbox' name="chk" onclick="checkColor(this);chkCount(this)" /></td>
+      <td id="dateList2"></td>
+      <td id="nameList2"></td>
     </tr>
-    <tr class = "trTop4">
-      <td><input type='checkbox' class = "inputTop4" onclick = "checkColor(this)"/></td>
-      <td></td>
-      <td></td>
+    <tr class="trTop4">
+      <td><input type='checkbox' name="chk" onclick="checkColor(this);chkCount(this)" /></td>
+      <td id="dateList3"></td>
+      <td id="nameList3"></td>
     </tr>
-    <tr class = "trTop4">
-      <td><input type='checkbox' class = "inputTop4" onclick = "checkColor(this)"/></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td><input type='checkbox' onclick = "checkColor(this)"/></td>
-      <td></td>
-      <td></td>
+    <tr class="trTop4">
+      <td><input type='checkbox' name="chk" onclick="checkColor(this);chkCount(this)" /></td>
+      <td id="dateList4"></td>
+      <td id="nameList4"></td>
     </tr>
     <tr>
-      <td><input type='checkbox' onclick = "checkColor(this)"/></td>
-      <td></td>
-      <td></td>
+      <td><input type='checkbox' name="chk" onclick="checkColor(this);chkCount(this)" /></td>
+      <td id="dateList5"></td>
+      <td id="nameList5"></td>
     </tr>
     <tr>
-      <td><input type='checkbox' onclick = "checkColor(this)"/></td>
-      <td></td>
-      <td></td>
+      <td><input type='checkbox' name="chk" onclick="checkColor(this);chkCount(this)" /></td>
+      <td id="dateList6"></td>
+      <td id="nameList6"></td>
     </tr>
     <tr>
-      <td><input type='checkbox' onclick = "checkColor(this)"/></td>
-      <td></td>
-      <td></td>
+      <td><input type='checkbox' name="chk" onclick="checkColor(this);chkCount(this)" /></td>
+      <td id="dateList7"></td>
+      <td id="nameList7"></td>
     </tr>
     <tr>
-      <td><input type='checkbox' onclick = "checkColor(this)"/></td>
-      <td></td>
-      <td></td>
+      <td><input type='checkbox' name="chk" onclick="checkColor(this);chkCount(this)" /></td>
+      <td id="dateList8"></td>
+      <td id="nameList8"></td>
     </tr>
     <tr>
-      <td><input type='checkbox' onclick = "checkColor(this)"/></td>
-      <td></td>
-      <td></td>
+      <td><input type='checkbox' name="chk" onclick="checkColor(this);chkCount(this)" /></td>
+      <td id="dateList9"></td>
+      <td id="nameList9"></td>
+    </tr>
+    <tr>
+      <td><input type='checkbox' name="chk" onclick="checkColor(this);chkCount(this)" /></td>
+      <td id="dateList10"></td>
+      <td id="nameList10"></td>
     </tr>
 
     <tr>
       <td class="elseTd" colspan="3">
-        <input type ="button" value="load"/>
+        <input type="button" value="load" onclick="loadVideo()"/>
       </td>
     </tr>
 
     <tr>
       <td class="elseTd" colspan="3">
-        <ul class = "pageNum">  
-          <li><a href="#" style="margin-left:200px;" onclick="prev_page()">◀</a></li>  
-          <li><a class = "numBox" href="#">1</a></li>  
-          <li><a class = "numBox" href="#">2</a></li>  
-          <li><a class = "numBox" href="#">3</a></li>  
-          <li><a class = "numBox" href="#">4</a></li>  
-          <li><a class = "numBox" href="#">5</a></li>  
-          <li><a class = "numBox" href="#">6</a></li>  
-          <li><a class = "numBox" href="#">7</a></li>  
-          <li><a class = "numBox" href="#">8</a></li>  
-          <li><a class = "numBox" href="#">9</a></li>  
-          <li><a class = "numBox" href="#">10</a></li> 
-          <li><a href="#" onclick="next_page()">▶</a></li>   
+        <ul class="pageNum">
+          <li><a href="#" style="margin-left:200px;" onclick="prev_page()">◀</a></li>
+          <li><a class="numBox" href="#">1</a></li>
+          <li><a class="numBox" href="#">2</a></li>
+          <li><a class="numBox" href="#">3</a></li>
+          <li><a class="numBox" href="#">4</a></li>
+          <li><a class="numBox" href="#">5</a></li>
+          <li><a class="numBox" href="#">6</a></li>
+          <li><a class="numBox" href="#">7</a></li>
+          <li><a class="numBox" href="#">8</a></li>
+          <li><a class="numBox" href="#">9</a></li>
+          <li><a class="numBox" href="#">10</a></li>
+          <li><a href="#" onclick="next_page()">▶</a></li>
         </ul>
       </td>
     </tr>
   </table>
-  
+
+  <div id="videoDiv">
+    <div>
+      <div class='label'>
+        영상이름1
+      </div>
+      <div class='label'>
+        영상이름2
+      </div>
+      <div>
+        <video src='./testvideo.mp4' width="500" height='500' autoplay></video>
+        <video src='./testvideo.mp4' width="500" height='500' autoplay></video>
+      </div>
+    </div>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    <div>
+      <div class='label'>
+        영상이름3
+      </div>
+      <div class='label'>
+        영상이름4
+      </div>
+      <div>
+        <video src='./testvideo.mp4' width="500" height='500' autoplay></video>
+        <video src='./testvideo.mp4' width="500" height='500' autoplay></video>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
