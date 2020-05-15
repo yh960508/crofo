@@ -95,13 +95,15 @@ video {
 }
 
 .label {
-    width:498px;
-    height:30px;
+    width:345px;
+    height:25px;
     display: inline-block;
     background-color: lightgray;
     text-align: center;
-    font-size: 20px;
+    font-size: 17px;
     font-weight: 700;
     line-height: 29px;
     margin-top: 5px;
+    margin-left: 1px;
+    margin-right: 1px;
 }

@@ -8,6 +8,11 @@
 
     // 체크된거 색변경
     var checkedCount = 0; // 체크된박스 숫자
+    var checkedList = []; // 체크된영상 이름명
+
+    var videoNum = 250; // 동영상 개수
+    var pageNum; // 페이지 개수
+    var page10Unit= 0; // 
 
     function liIntroduce() {
       $("#introduce").css("display", "block");
@@ -26,47 +31,63 @@
         alert("동영상 최대개수 초과(최대: 4개)");
       }
       else{
-        $("#introduce").css("display", "none");
-        $("#cctvSelectTable").css("display", "none");
-        $("#videoDiv").css("display","block")
+        let obj = {
+          name: checkedList,
+          cnt: checkedCount
+        };
+        let js = JSON.stringify(obj);
+        $.ajax({
+          type: "POST",
+          url: "/loadVideo",
+          contentType: 'application/json; charset=utf-8',
+          data: js,
+          dataType: 'json',
+          success: function(data) {
+            for(let i = 0; i < checkedCount; i++) {
+              $("#label" + (i + 1)).text(data[i].datatime + " / " + data[i].name);
+              $("#video" + (i + 1)).attr("src", data[i].path);
+            }
+            checkedList.splice(0, checkedCount);
+            checkedCount = 0;
+            $("#introduce").css("display", "none");
+            $("#cctvSelectTable").css("display", "none");
+            $("#videoDiv").css("display","block")
+          }
+        });
       }
     }
 
-    function checkColor(it) {
-      tr = it.parentNode.parentNode;
-      if (it.checked) {
-        if (checkedCount < 4) {
-          tr.style.backgroundColor = "lightgray";
-          checkedCount++;
-        }
+    function checkCountColor(index) {
+      var chkbox = $("#nameList"+index).text();
+      if(chkbox==""){
+       $("#chk"+index).prop("checked",false)
+       return;
       }
-      else {
-        if (checkedCount > 0) {
-          tr.style.backgroundColor = "white";
+      for (i = 0; i < checkedCount; i++) {
+        if (checkedList[i] == chkbox) {
+          checkedList.splice(i, 1);
           checkedCount--;
+          $("#tr"+index).css('backgroundColor','white');
+          return;
         }
       }
-    }
-
-    function chkCount(obj) {
-      var chkbox = document.getElementsByName("chk");
-      var chkCnt = 0;
-
-      for (var i = 0; i < chkbox.length; i++) {
-        if (chkbox[i].checked) {
-          chkCnt++;
-        }
-      }
-
-      if (chkCnt > 4) {
+      if(checkedCount == 4) {
         alert("동영상 최대개수 초과(최대: 4개)");
-        obj.checked = false;
-        return false;
+        return;
       }
+      checkedList.push(chkbox);
+      checkedCount++;
+      $("#tr"+index).css('backgroundColor','lightgray');
     }
 
     let nowPage = 0; // 동영상 목록 현재 페이지(숫자는 0으로 지정하고 너네가 출력할 때는 +1 해서 화면 출력하면 될 듯)
     $(document).ready(function () {
+      if(videoNum % 10 == 0){
+        pageNum = parseInt(videoNum / 10);
+      }
+      else{
+        pageNum = parseInt(videoNum / 10) + 1;
+      }
       getVideoAmount();
       getVideos();
     });
@@ -80,25 +101,49 @@
       });
     }
 
-    function getVideos() {
+    function getVideoList() {
       $.ajax({
         type: "GET",
-        url: "/getVideo/" + nowPage,
+        url: "/getVideoList/" + nowPage,
         success: function (data) {
           if (data[0].result == true) {
             let len = data[0].length;
             for (let i = 1; i <= len; i++) {
-              document.getElementById("dateList" + i).innerHTML = test[i].datatime;
-              document.getElementById("nameList" + i).innerHTML = test[i].name;
+              document.getElementById("dateList" + i).innerHTML = data[i].datatime;
+              document.getElementById("nameList" + i).innerHTML = data[i].name;
             }
           } else return;
         }
       });
     }
 
-    // 페이징
-    var videoNum = 55;
-    var pageNum = (videoNum / 10) + 1;
+    function pagePrev(){
+      if(page10Unit > 0){
+        page10Unit--;
+        for(let i = 1; i <= 10; i++){
+          if(((page10Unit * 10) + i) <= pageNum ){
+            $("#page"+i).text(page10Unit*10 + i);
+          }
+          else{
+            $("#page"+i).text("");
+          }
+        }
+      }
+    }
+
+    function pageNext(){
+      if((page10Unit+1)*10 < pageNum){
+        page10Unit++;
+        for(let i = 1; i <= 10; i++){
+          if(((page10Unit * 10) + i) <= pageNum ){
+            $("#page"+i).text(page10Unit*10 + i);
+          }
+          else{
+            $("#page"+i).text("");
+          }
+        }
+      }
+    }
 
   </script>
 
@@ -136,53 +181,53 @@
     <th></th>
     <th>날짜</th>
     <th>CCTV영상명</th>
-    <tr class="trTop4">
-      <td><input type='checkbox' name="chk" onclick="checkColor(this);chkCount(this)" /></td>
+    <tr id = "tr1">
+      <td><input type='checkbox' id="chk1" onclick="checkCountColor(1)" /></td>
       <td id="dateList1"></td>
       <td id="nameList1"></td>
     </tr>
-    <tr class="trTop4">
-      <td><input type='checkbox' name="chk" onclick="checkColor(this);chkCount(this)" /></td>
+    <tr id = "tr2">
+      <td><input type='checkbox' id="chk2" onclick="checkCountColor(2)" /></td>
       <td id="dateList2"></td>
       <td id="nameList2"></td>
     </tr>
-    <tr class="trTop4">
-      <td><input type='checkbox' name="chk" onclick="checkColor(this);chkCount(this)" /></td>
+    <tr id = "tr3">
+      <td><input type='checkbox' id="chk3" onclick="checkCountColor(3)" /></td>
       <td id="dateList3"></td>
       <td id="nameList3"></td>
     </tr>
-    <tr class="trTop4">
-      <td><input type='checkbox' name="chk" onclick="checkColor(this);chkCount(this)" /></td>
+    <tr id = "tr4">
+      <td><input type='checkbox' id="chk4" onclick="checkCountColor(4)" /></td>
       <td id="dateList4"></td>
       <td id="nameList4"></td>
     </tr>
-    <tr>
-      <td><input type='checkbox' name="chk" onclick="checkColor(this);chkCount(this)" /></td>
+    <tr id = "tr5">
+      <td><input type='checkbox' id="chk5" onclick="checkCountColor(5)" /></td>
       <td id="dateList5"></td>
       <td id="nameList5"></td>
     </tr>
-    <tr>
-      <td><input type='checkbox' name="chk" onclick="checkColor(this);chkCount(this)" /></td>
+    <tr id = "tr6">
+      <td><input type='checkbox' id="chk6" onclick="checkCountColor(6)" /></td>
       <td id="dateList6"></td>
       <td id="nameList6"></td>
     </tr>
-    <tr>
-      <td><input type='checkbox' name="chk" onclick="checkColor(this);chkCount(this)" /></td>
+    <tr id = "tr7">
+      <td><input type='checkbox' id="chk7" onclick="checkCountColor(7)" /></td>
       <td id="dateList7"></td>
       <td id="nameList7"></td>
     </tr>
-    <tr>
-      <td><input type='checkbox' name="chk" onclick="checkColor(this);chkCount(this)" /></td>
+    <tr id = "tr8">
+      <td><input type='checkbox' id="chk8" onclick="checkCountColor(8)" /></td>
       <td id="dateList8"></td>
       <td id="nameList8"></td>
     </tr>
-    <tr>
-      <td><input type='checkbox' name="chk" onclick="checkColor(this);chkCount(this)" /></td>
+    <tr id = "tr9">
+      <td><input type='checkbox' id="chk9" onclick="checkCountColor(9)" /></td>
       <td id="dateList9"></td>
       <td id="nameList9"></td>
     </tr>
-    <tr>
-      <td><input type='checkbox' name="chk" onclick="checkColor(this);chkCount(this)" /></td>
+    <tr id = "tr10">
+      <td><input type='checkbox' id="chk10" onclick="checkCountColor(10)" /></td>
       <td id="dateList10"></td>
       <td id="nameList10"></td>
     </tr>
@@ -196,18 +241,18 @@
     <tr>
       <td class="elseTd" colspan="3">
         <ul class="pageNum">
-          <li><a href="#" style="margin-left:200px;" onclick="prev_page()">◀</a></li>
-          <li><a class="numBox" href="#">1</a></li>
-          <li><a class="numBox" href="#">2</a></li>
-          <li><a class="numBox" href="#">3</a></li>
-          <li><a class="numBox" href="#">4</a></li>
-          <li><a class="numBox" href="#">5</a></li>
-          <li><a class="numBox" href="#">6</a></li>
-          <li><a class="numBox" href="#">7</a></li>
-          <li><a class="numBox" href="#">8</a></li>
-          <li><a class="numBox" href="#">9</a></li>
-          <li><a class="numBox" href="#">10</a></li>
-          <li><a href="#" onclick="next_page()">▶</a></li>
+          <li><a href="#" style="margin-left:200px;" onclick="pagePrev()">◀</a></li>
+          <li><a id="page1" class="numBox" href="#">1</a></li>
+          <li><a id="page2" class="numBox" href="#">2</a></li>
+          <li><a id="page3" class="numBox" href="#">3</a></li>
+          <li><a id="page4" class="numBox" href="#">4</a></li>
+          <li><a id="page5" class="numBox" href="#">5</a></li>
+          <li><a id="page6" class="numBox" href="#">6</a></li>
+          <li><a id="page7" class="numBox" href="#">7</a></li>
+          <li><a id="page8" class="numBox" href="#">8</a></li>
+          <li><a id="page9" class="numBox" href="#">9</a></li>
+          <li><a id="page10" class="numBox" href="#">10</a></li>
+          <li><a href="#" onclick="pageNext()">▶</a></li>
         </ul>
       </td>
     </tr>
@@ -215,15 +260,11 @@
 
   <div id="videoDiv">
     <div>
-      <div class='label'>
-        영상이름1
-      </div>
-      <div class='label'>
-        영상이름2
-      </div>
+      <div id = "label1" class='label'></div>
+      <div id = "label2" class='label'></div>
       <div>
-        <video src='./testvideo.mp4' width="500" height='500' autoplay></video>
-        <video src='./testvideo.mp4' width="500" height='500' autoplay></video>
+        <video id= "video1" src='./testvideo.mp4' width="350" height='350' autoplay></video>
+        <video id= "video2" src='./testvideo.mp4' width="350" height='350' autoplay></video>
       </div>
     </div>
     </br>
@@ -236,30 +277,12 @@
     </br>
     </br>
     </br>
-    </br>
-    </br>
-    </br>
-    </br>
-    </br>
-    </br>
-    </br>
-    </br>
-    </br>
-    </br>
-    </br>
-    </br>
-    </br>
-    </br>
     <div>
-      <div class='label'>
-        영상이름3
-      </div>
-      <div class='label'>
-        영상이름4
-      </div>
+      <div id = "label3" class='label'></div>
+      <div id = "label4" class='label'></div>
       <div>
-        <video src='./testvideo.mp4' width="500" height='500' autoplay></video>
-        <video src='./testvideo.mp4' width="500" height='500' autoplay></video>
+        <video id= "video3" src='./testvideo.mp4' width="350" height='350' autoplay></video>
+        <video id= "video4" src='./testvideo.mp4' width="350" height='350' autoplay></video>
       </div>
     </div>
   </div>
