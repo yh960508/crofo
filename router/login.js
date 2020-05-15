@@ -9,6 +9,7 @@ let hasher = bkfd2Password();
 let passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy;
 
+const mysqlID = 'root';
 const mysqlPW = '1q2w3e4r!@';
 const dbName = 'capstone';
 const sessionKey = 'secretkey';
@@ -26,7 +27,7 @@ router.use(session({
     store: new MYSQLStore({
         host: 'localhost',
         port: 3306,
-        user: 'root',
+        user: mysqlID,
         password: mysqlPW,
         database: dbName
     })
@@ -36,14 +37,18 @@ router.use(passport.initialize());
 router.use(passport.session());
 
 router.get('/', function(request, response) {
-    fs.readFile('./login.html', 'utf8', function(error, data) {
-        if(error) {
-            console.log(error);
-        } else {
-            response.writeHead(200, {'Content-Type': 'text/html'});
-            response.end(data);
-        }
-    });
+    if(request.user) {
+        response.redirect('/');
+    } else {
+        fs.readFile('./webpage/login.html', 'utf8', function(error, data) {
+            if(error) {
+                console.log(error);
+            } else {
+                response.writeHead(200, {'Content-Type': 'text/html'});
+                response.end(data);
+            }
+        });
+    }
 });
 
 router.post('/',
@@ -96,7 +101,8 @@ passport.use(new LocalStrategy({
                 let user = results[0];
                 return hasher({password:password, salt:user.salt}, function(err, pass, salt, hash) {
                     if (hash == user.password) {
-                        console.log(user + ': login success');
+                        let today = new Date();
+                        console.log(username + ": login success" + "[" + today.getFullYear()  + "/" + (today.getMonth() + 1) + "/" + today.getDate() + " " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + "." + today.getMilliseconds() + "]");
                         return done(null, user);
                     } else {
                         return done(null, false);
@@ -108,15 +114,12 @@ passport.use(new LocalStrategy({
 ));
 
 passport.serializeUser(function(user, done) {
-    console.log(user + ': serializeUser');
     done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
-    console.log(user + ': deserializeUser');
     let sql = 'select * from login where id=?';
     conn.query(sql, [id], function(error, results) {
-        console.log(sql, error, results);
         if (error) {
             console.log(error);
         } else {
