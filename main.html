@@ -101,7 +101,8 @@
       });
     }
 
-    function getVideoList() {
+    function getVideoList(index) {
+      nowPage = page10Unit*10 + index - 1;
       $.ajax({
         type: "GET",
         url: "/getVideoList/" + nowPage,
@@ -123,6 +124,7 @@
         for(let i = 1; i <= 10; i++){
           if(((page10Unit * 10) + i) <= pageNum ){
             $("#page"+i).text(page10Unit*10 + i);
+            nowPage = page10Unit*10 + i - 1;
           }
           else{
             $("#page"+i).text("");
@@ -137,6 +139,7 @@
         for(let i = 1; i <= 10; i++){
           if(((page10Unit * 10) + i) <= pageNum ){
             $("#page"+i).text(page10Unit*10 + i);
+            nowPage = page10Unit*10 + i - 1;
           }
           else{
             $("#page"+i).text("");
@@ -242,16 +245,16 @@
       <td class="elseTd" colspan="3">
         <ul class="pageNum">
           <li><a href="#" style="margin-left:200px;" onclick="pagePrev()">◀</a></li>
-          <li><a id="page1" class="numBox" href="#">1</a></li>
-          <li><a id="page2" class="numBox" href="#">2</a></li>
-          <li><a id="page3" class="numBox" href="#">3</a></li>
-          <li><a id="page4" class="numBox" href="#">4</a></li>
-          <li><a id="page5" class="numBox" href="#">5</a></li>
-          <li><a id="page6" class="numBox" href="#">6</a></li>
-          <li><a id="page7" class="numBox" href="#">7</a></li>
-          <li><a id="page8" class="numBox" href="#">8</a></li>
-          <li><a id="page9" class="numBox" href="#">9</a></li>
-          <li><a id="page10" class="numBox" href="#">10</a></li>
+          <li><a id="page1" class="numBox" onclick="getVideoList(1)">1</a></li>
+          <li><a id="page2" class="numBox" onclick="getVideoList(2)">2</a></li>
+          <li><a id="page3" class="numBox" onclick="getVideoList(3)">3</a></li>
+          <li><a id="page4" class="numBox" onclick="getVideoList(4)">4</a></li>
+          <li><a id="page5" class="numBox" onclick="getVideoList(5)">5</a></li>
+          <li><a id="page6" class="numBox" onclick="getVideoList(6)">6</a></li>
+          <li><a id="page7" class="numBox" onclick="getVideoList(7)">7</a></li>
+          <li><a id="page8" class="numBox" onclick="getVideoList(8)">8</a></li>
+          <li><a id="page9" class="numBox" onclick="getVideoList(9)">9</a></li>
+          <li><a id="page10" class="numBox" onclick="getVideoList(10)">10</a></li>
           <li><a href="#" onclick="pageNext()">▶</a></li>
         </ul>
       </td>
