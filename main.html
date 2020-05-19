@@ -53,7 +53,7 @@
           dataType: 'json',
           success: function(data) {
             for(let i = 0; i < checkedCount; i++) {
-              $("#label" + (i + 1)).text(data[i].datatime + " / " + data[i].name);
+              $("#label" + (i + 1)).text(data[i].date + " / " + data[i].name);
               $("#video" + (i + 1)).attr("src", data[i].path);
             }
             checkedList.splice(0, checkedCount);
@@ -109,7 +109,7 @@
           if (data[0].result == true) {
             let len = data[0].length;
             for (let i = 1; i <= len; i++) {
-              document.getElementById("dateList" + i).innerHTML = data[i].datatime;
+              document.getElementById("dateList" + i).innerHTML = data[i].date;
               document.getElementById("nameList" + i).innerHTML = data[i].name;
             }
           } else return;

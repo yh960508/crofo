@@ -13,7 +13,7 @@ const dbName = 'capstone';
 const sessionKey = 'secretkey';
 
 let conn = mysql.createConnection({
-    user: 'root',
+    user: mysqlID,
     password: mysqlPW,
     database: dbName
 });
@@ -72,7 +72,7 @@ router.get('/getVideoList/:page', function(request, response) {
         response.redirect('/login');
     } else {
         let index = request.params.page;
-        let sql = 'select name, datetime from video order by datetime desc limit ' + index + ', ' + 10;
+        let sql = 'select name, date from video order by date desc limit ' + index + ', ' + 10;
         conn.query(sql, function (error, results) {
             if (error) {
                 console.log(error);
@@ -92,7 +92,7 @@ router.get('/getVideoList/:page', function(request, response) {
                     for(let i = 0; i < len; i++) {
                         let obj = {};
                         obj["name"] = results[i].name;
-                        obj["datetime"] = results[i].datetime;
+                        obj["date"] = results[i].date;
                         arr[i + 1] = obj;
                     }
                     let js = JSON.stringify(arr);
@@ -116,14 +116,14 @@ router.post('/loadVideo', function(request, response) {
         }
         let arr = [];
         for (let i = 0; i < cnt; i++) {
-            let sql = 'select name, path, datetime from video where name=?';
+            let sql = 'select name, path, date from video where name=?';
             conn.query(sql, [videoName[i]], function(error, results) {
                 if (error) {
                     console.log(error);
                 } else {
                     let obj = {};
                     obj["name"] = results[0].name;
-                    obj["datetime"] = results[0].datetime;
+                    obj["date"] = results[0].date;
                     obj["path"] = results[0].path;
                     arr[i] = obj;
 

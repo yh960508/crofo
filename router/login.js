@@ -15,7 +15,7 @@ const dbName = 'capstone';
 const sessionKey = 'secretkey';
 
 let conn = mysql.createConnection({
-    user: 'root',
+    user: mysqlID,
     password: mysqlPW,
     database: dbName
 });
