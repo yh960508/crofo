@@ -72,7 +72,7 @@ router.get('/getVideoList/:page', function(request, response) {
         response.redirect('/login');
     } else {
         let index = request.params.page;
-        let sql = 'select name, date from video order by date desc limit ' + index + ', ' + 10;
+        let sql = 'select name, date from video order by date desc limit ' + (index * 10) + ', ' + (index * 10 + 10);
         conn.query(sql, function (error, results) {
             if (error) {
                 console.log(error);
