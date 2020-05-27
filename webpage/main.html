@@ -152,7 +152,7 @@
 
 
 <title>CROFO</title>
-<link rel="stylesheet" href="./style/main_style.css">
+<link rel="stylesheet" href="../public/style/main_style.css">
 </head>
 
 <body>
@@ -162,7 +162,7 @@
       CROFO TEST WEB PAGE
     </h1>
   </header>
-  <img src="./images/crofo_logo.png" class="absolute" alt="CROFO LOGO" style="width:200px;height:100px;">
+  <img src="../public/images/crofo_logo.png" class="absolute" alt="CROFO LOGO" style="width:200px;height:100px;">
 
   <nav>
     <ul class="nav-container">
@@ -175,91 +175,93 @@
     <p>CROFO는 Cross와 Infomation를 합성하여 만든 단어로, 교차로에서 운전자가 보기 어려운 사각지대의 정보를 운전자에게 앱으로 제공함으로서 사고를 예방하기 위해 만들어졌다.</p>
   </div>
 
-  <table id="cctvSelectTable">
-    <colgroup>
-      <col width="25px;" />
-      <col width="100px" />
-      <col width="600px;" />
-    </colgroup>
-    <th></th>
-    <th>날짜</th>
-    <th>CCTV영상명</th>
-    <tr id = "tr1">
-      <td><input type='checkbox' id="chk1" onclick="checkCountColor(1)" /></td>
-      <td id="dateList1"></td>
-      <td id="nameList1"></td>
-    </tr>
-    <tr id = "tr2">
-      <td><input type='checkbox' id="chk2" onclick="checkCountColor(2)" /></td>
-      <td id="dateList2"></td>
-      <td id="nameList2"></td>
-    </tr>
-    <tr id = "tr3">
-      <td><input type='checkbox' id="chk3" onclick="checkCountColor(3)" /></td>
-      <td id="dateList3"></td>
-      <td id="nameList3"></td>
-    </tr>
-    <tr id = "tr4">
-      <td><input type='checkbox' id="chk4" onclick="checkCountColor(4)" /></td>
-      <td id="dateList4"></td>
-      <td id="nameList4"></td>
-    </tr>
-    <tr id = "tr5">
-      <td><input type='checkbox' id="chk5" onclick="checkCountColor(5)" /></td>
-      <td id="dateList5"></td>
-      <td id="nameList5"></td>
-    </tr>
-    <tr id = "tr6">
-      <td><input type='checkbox' id="chk6" onclick="checkCountColor(6)" /></td>
-      <td id="dateList6"></td>
-      <td id="nameList6"></td>
-    </tr>
-    <tr id = "tr7">
-      <td><input type='checkbox' id="chk7" onclick="checkCountColor(7)" /></td>
-      <td id="dateList7"></td>
-      <td id="nameList7"></td>
-    </tr>
-    <tr id = "tr8">
-      <td><input type='checkbox' id="chk8" onclick="checkCountColor(8)" /></td>
-      <td id="dateList8"></td>
-      <td id="nameList8"></td>
-    </tr>
-    <tr id = "tr9">
-      <td><input type='checkbox' id="chk9" onclick="checkCountColor(9)" /></td>
-      <td id="dateList9"></td>
-      <td id="nameList9"></td>
-    </tr>
-    <tr id = "tr10">
-      <td><input type='checkbox' id="chk10" onclick="checkCountColor(10)" /></td>
-      <td id="dateList10"></td>
-      <td id="nameList10"></td>
-    </tr>
-
-    <tr>
-      <td class="elseTd" colspan="3">
-        <input type="button" value="load" onclick="loadVideo()"/>
-      </td>
-    </tr>
-
-    <tr>
-      <td class="elseTd" colspan="3">
-        <ul class="pageNum">
-          <li><a href="#" style="margin-left:200px;" onclick="pagePrev()">◀</a></li>
-          <li><a id="page1" class="numBox" onclick="getVideoList(1)">1</a></li>
-          <li><a id="page2" class="numBox" onclick="getVideoList(2)">2</a></li>
-          <li><a id="page3" class="numBox" onclick="getVideoList(3)">3</a></li>
-          <li><a id="page4" class="numBox" onclick="getVideoList(4)">4</a></li>
-          <li><a id="page5" class="numBox" onclick="getVideoList(5)">5</a></li>
-          <li><a id="page6" class="numBox" onclick="getVideoList(6)">6</a></li>
-          <li><a id="page7" class="numBox" onclick="getVideoList(7)">7</a></li>
-          <li><a id="page8" class="numBox" onclick="getVideoList(8)">8</a></li>
-          <li><a id="page9" class="numBox" onclick="getVideoList(9)">9</a></li>
-          <li><a id="page10" class="numBox" onclick="getVideoList(10)">10</a></li>
-          <li><a href="#" onclick="pageNext()">▶</a></li>
-        </ul>
-      </td>
-    </tr>
-  </table>
+  <div id="cctvdiv"> 
+    <table id="cctvSelectTable">
+      <colgroup>
+        <col width="25px;" />
+        <col width="100px" />
+        <col width="600px;" />
+      </colgroup>
+      <th></th>
+      <th>날짜</th>
+      <th>CCTV영상명</th>
+      <tr id = "tr1">
+        <td><input type='checkbox' id="chk1" onclick="checkCountColor(1)" /></td>
+        <td id="dateList1"></td>
+        <td id="nameList1"></td>
+      </tr>
+      <tr id = "tr2">
+        <td><input type='checkbox' id="chk2" onclick="checkCountColor(2)" /></td>
+        <td id="dateList2"></td>
+        <td id="nameList2"></td>
+      </tr>
+      <tr id = "tr3">
+        <td><input type='checkbox' id="chk3" onclick="checkCountColor(3)" /></td>
+        <td id="dateList3"></td>
+        <td id="nameList3"></td>
+      </tr>
+      <tr id = "tr4">
+        <td><input type='checkbox' id="chk4" onclick="checkCountColor(4)" /></td>
+        <td id="dateList4"></td>
+        <td id="nameList4"></td>
+      </tr>
+      <tr id = "tr5">
+        <td><input type='checkbox' id="chk5" onclick="checkCountColor(5)" /></td>
+        <td id="dateList5"></td>
+        <td id="nameList5"></td>
+      </tr>
+      <tr id = "tr6">
+        <td><input type='checkbox' id="chk6" onclick="checkCountColor(6)" /></td>
+        <td id="dateList6"></td>
+        <td id="nameList6"></td>
+      </tr>
+      <tr id = "tr7">
+        <td><input type='checkbox' id="chk7" onclick="checkCountColor(7)" /></td>
+        <td id="dateList7"></td>
+        <td id="nameList7"></td>
+      </tr>
+      <tr id = "tr8">
+        <td><input type='checkbox' id="chk8" onclick="checkCountColor(8)" /></td>
+        <td id="dateList8"></td>
+        <td id="nameList8"></td>
+      </tr>
+      <tr id = "tr9">
+        <td><input type='checkbox' id="chk9" onclick="checkCountColor(9)" /></td>
+        <td id="dateList9"></td>
+        <td id="nameList9"></td>
+      </tr>
+      <tr id = "tr10">
+        <td><input type='checkbox' id="chk10" onclick="checkCountColor(10)" /></td>
+        <td id="dateList10"></td>
+        <td id="nameList10"></td>
+      </tr>
+  
+      <tr>
+        <td class="elseTd" colspan="3">
+          <input type="button" value="load" onclick="loadVideo()"/>
+        </td>
+      </tr>
+  
+      <tr>
+        <td class="elseTd" colspan="3">
+          <ul class="pageNum">
+            <li><a href="#" style="margin-left:200px;" onclick="pagePrev()">◀</a></li>
+            <li><a id="page1" class="numBox" onclick="getVideoList(1)">1</a></li>
+            <li><a id="page2" class="numBox" onclick="getVideoList(2)">2</a></li>
+            <li><a id="page3" class="numBox" onclick="getVideoList(3)">3</a></li>
+            <li><a id="page4" class="numBox" onclick="getVideoList(4)">4</a></li>
+            <li><a id="page5" class="numBox" onclick="getVideoList(5)">5</a></li>
+            <li><a id="page6" class="numBox" onclick="getVideoList(6)">6</a></li>
+            <li><a id="page7" class="numBox" onclick="getVideoList(7)">7</a></li>
+            <li><a id="page8" class="numBox" onclick="getVideoList(8)">8</a></li>
+            <li><a id="page9" class="numBox" onclick="getVideoList(9)">9</a></li>
+            <li><a id="page10" class="numBox" onclick="getVideoList(10)">10</a></li>
+            <li><a href="#" onclick="pageNext()">▶</a></li>
+          </ul>
+        </td>
+      </tr>
+    </table>
+  </div>
 
   <div id="videoDiv">
     <div>
