@@ -13,13 +13,13 @@
     var page10Unit= 0; // 10페이지 단위
 
     $(document).ready(function () {
+      getVideoAmount();
       if(videoNum % 10 == 0){
         pageNum = parseInt(videoNum / 10);
       }
       else{
         pageNum = parseInt(videoNum / 10) + 1;
       }
-      getVideoAmount();
       getVideoList(1);
     });
 
@@ -82,6 +82,7 @@
       }
       if(checkedCount == 4) {
         alert("동영상 최대개수 초과(최대: 4개)");
+        $("#chk"+index).prop("checked",false)
         return;
       }
       checkedList.push(chkbox);
@@ -96,7 +97,6 @@
         url: "/getVideoAmount",
         success: function (data) {
           videoNum = data.amount;
-          pageNum = (videoNum / 10) + 1;
         }
       });
     }
