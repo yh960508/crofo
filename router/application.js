@@ -3,7 +3,7 @@ let router = express.Router();
 let mysql = require('mysql');
 
 const mysqlID = 'root';
-const mysqlPW = '1q2w3e4r!@';
+const mysqlPW = 'root';
 const dbName = 'capstone';
 
 let conn = mysql.createConnection({

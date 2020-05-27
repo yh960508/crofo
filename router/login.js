@@ -10,7 +10,7 @@ let passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy;
 
 const mysqlID = 'root';
-const mysqlPW = '1q2w3e4r!@';
+const mysqlPW = 'root';
 const dbName = 'capstone';
 const sessionKey = 'secretkey';
 
@@ -58,7 +58,7 @@ router.post('/',
     })
 );
 
-/*
+
 //sing up 
 router.post('/reg', function(request, response) {
     hasher({password:request.body.pw}, function(error, pass, salt, hash) {
@@ -72,7 +72,7 @@ router.post('/reg', function(request, response) {
             if (error) {
                 console.log(error);
             } else {
-                fs.readFile('./Web_Page.html', function(error, data) {
+                fs.readFile('./webpage/main.html', function(error, data) {
                     if(error) {
                         console.log(error);
                     } else {
@@ -84,7 +84,7 @@ router.post('/reg', function(request, response) {
         });
     });
 });
-*/
+
 
 passport.use(new LocalStrategy({
         usernameField: 'id',

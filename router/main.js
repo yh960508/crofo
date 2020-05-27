@@ -8,7 +8,7 @@ let passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy;
 
 const mysqlID = 'root';
-const mysqlPW = '1q2w3e4r!@';
+const mysqlPW = 'root';
 const dbName = 'capstone';
 const sessionKey = 'secretkey';
 
