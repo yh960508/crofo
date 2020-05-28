@@ -1,15 +1,21 @@
 let express = require('express');
 let router = express.Router();
 let mysql = require('mysql');
+let socketio = require('socket.io');
 
 const mysqlID = 'root';
-const mysqlPW = 'root';
+const mysqlPW = '1q2w3e4r!@';
 const dbName = 'capstone';
 
 let conn = mysql.createConnection({
     user: mysqlID,
     password: mysqlPW,
     database: dbName
+});
+let io = socketio.listen(router);
+
+io.sockets.on('connection', function (socket) {
+    let sql = 'select content, key from objhistory-crosswalk orderby id desc limit 1';
 });
 
 /*
@@ -31,9 +37,9 @@ router.post('/cross/list', function (request, response) { //운전자가 길찾�
         let lon = parseFloat(arr[i].lon);
         let angle = parseFloat(arr[i].angle);
 
-        console.log(lat);
-        console.log(lon);
-        console.log(angle);
+        //console.log(lat);
+        //console.log(lon);
+        //console.log(angle);
 
         //Crosswalk DB에서 교차로 목록과 비교해서 해당 교차로가 DB에 등록되어있는지 확인
         //그 후 personalCross DB에 해당 교차로 목록 개인별로 저장
@@ -52,11 +58,7 @@ router.post('/cross/find', function (request, response) { //운전자가 길찾�
     let lon = data.lon;
     let cnt = 0;
     let arr = [];
-    
-    console.log(lat, lon);
 
-    //Crosswalk DB에서 현재 차량 위치랑 가까운 위치에 있는 교차로명 위도, 경도를 json형태로 저장
-    //json 반복문 돌면서 arr에 삽임
     let sql = 'select * from intersection';
     conn.query(sql, function(error, results) {
         if (error) {
@@ -73,6 +75,7 @@ router.post('/cross/find', function (request, response) { //운전자가 길찾�
                     if (distance < 3000) {
                         let obj = {
                             id: results[i].id,
+                            key: results[i].key,
                             cent_x: results[i].cent_x,
                             cent_y: results[i].cent_y,
                             loc_x0: results[i].loc_x0,
@@ -90,7 +93,6 @@ router.post('/cross/find', function (request, response) { //운전자가 길찾�
                     if (i + 1 == len) {
                         response.json({
                             arr: arr,
-                            cnt: cnt,
                             result: true
                         });
                     }
@@ -98,8 +100,6 @@ router.post('/cross/find', function (request, response) { //운전자가 길찾�
             }
         }
     });
-    
-    //json형태로 android에 목록 전송
 });
 
 function getDistance(lat1, lon1, lat2, lon2){
@@ -127,6 +127,5 @@ function rad2deg(radian) {
     let pi = Math.PI;
     return radian * 180 / pi;   
 }
-
 
 module.exports = router;
