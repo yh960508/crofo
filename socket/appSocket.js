@@ -12,11 +12,13 @@ module.exports = function (server) {
 
     let io = socketio.listen(server);
     let userCnt = 0;
+    let isSending = false;
 
     io.sockets.on('connection', function (socket) {
         userCnt++;
-        if (userCnt == 1) {
-            while (userCnt > 0) {
+        if (userCnt == 1 && isSending == false) {
+            isSending = true;
+            while (isSending) {  
                 let sql = 'select content from objhistory-crosswalk order by id desc limit 1';
                 conn.query(sql, function (error, results) {
                     if (error) {
@@ -29,6 +31,9 @@ module.exports = function (server) {
                                 arr: results[0].content
                             }
                             socket.emit("message", data);
+                            if (userCnt < 1) {
+                                isSneding = false;
+                            }
                         }
                     }
                 });
