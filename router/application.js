@@ -5,14 +5,14 @@ let mysql = require('mysql');
 const HOST = 'bic4907.diskstation.me'
 const MYSQLID = 'capstone';
 const MYSQLPW = 'capstone2020';
-const DBName = 'capstone';
+const DBNAME = 'capstone';
 
 let conn = mysql.createConnection({
     host: HOST,
     user: MYSQLID,
     password: MYSQLPW,
-    database: DBName
-});
+    database: DBNAME
+});    
 
 router.post('/cross/find', function (request, response) { //운전자가 길찾기 기능을 사용하지 않았을 때
     let data = request.body;

@@ -5,13 +5,13 @@ module.exports = function (server) {
     const HOST = 'bic4907.diskstation.me'
     const MYSQLID = 'capstone';
     const MYSQLPW = 'capstone2020';
-    const DBName = 'capstone';
+    const DBNAME = 'capstone';
 
     let conn = mysql.createConnection({
         host: HOST,
         user: MYSQLID,
         password: MYSQLPW,
-        database: DBName
+        database: DBNAME
     });    
 
     let io = socketio.listen(server);

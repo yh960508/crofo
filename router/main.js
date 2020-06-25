@@ -10,18 +10,18 @@ let passport = require('passport'),
 const HOST = 'bic4907.diskstation.me'
 const MYSQLID = 'capstone';
 const MYSQLPW = 'capstone2020';
-const DBName = 'capstone';
-const SESSIONKey = 'secretkey';
+const DBNAME = 'capstone';
+const SESSIONKEY = 'secretkey';
 
 let conn = mysql.createConnection({
     host: HOST,
     user: MYSQLID,
     password: MYSQLPW,
-    database: DBName
+    database: DBNAME
 });
 
 router.use(session({
-    secret: SESSIONKey,
+    secret: SESSIONKEY,
     resave: false,
     saveUninitialized: true,
     store: new MYSQLStore({
@@ -29,7 +29,7 @@ router.use(session({
         port: 3306,
         user: MYSQLID,
         password: MYSQLPW,
-        database: DBName
+        database: DBNAME
     })
 }));
 
