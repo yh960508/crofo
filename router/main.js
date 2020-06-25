@@ -7,12 +7,14 @@ let MYSQLStore = require('express-mysql-session')(session);
 let passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy;
 
-const mysqlID = 'root';
-const mysqlPW = 'root';
+const host = 'bic4907.diskstation.me'
+const mysqlID = 'capstone';
+const mysqlPW = 'capstone2020';
 const dbName = 'capstone';
 const sessionKey = 'secretkey';
 
 let conn = mysql.createConnection({
+    host: host,
     user: mysqlID,
     password: mysqlPW,
     database: dbName
@@ -23,7 +25,7 @@ router.use(session({
     resave: false,
     saveUninitialized: true,
     store: new MYSQLStore({
-        host: 'localhost',
+        host: host,
         port: 3306,
         user: mysqlID,
         password: mysqlPW,
@@ -72,7 +74,7 @@ router.get('/getVideoList/:page', function(request, response) {
         response.redirect('/login');
     } else {
         let index = request.params.page;
-        let sql = 'select name, date from video order by date desc limit ' + (index * 10) + ', ' + (index * 10 + 10);
+        let sql = 'select name, date from video order by date desc limit ' + index + ', ' + 10;
         conn.query(sql, function (error, results) {
             if (error) {
                 console.log(error);

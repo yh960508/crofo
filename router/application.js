@@ -1,55 +1,17 @@
 let express = require('express');
 let router = express.Router();
 let mysql = require('mysql');
-let socketio = require('socket.io');
 
-const mysqlID = 'root';
-const mysqlPW = '1q2w3e4r!@';
+const host = 'bic4907.diskstation.me'
+const mysqlID = 'capstone';
+const mysqlPW = 'capstone2020';
 const dbName = 'capstone';
 
 let conn = mysql.createConnection({
+    host: host,
     user: mysqlID,
     password: mysqlPW,
     database: dbName
-});
-let io = socketio.listen(router);
-
-io.sockets.on('connection', function (socket) {
-    let sql = 'select content, key from objhistory-crosswalk orderby id desc limit 1';
-});
-
-/*
-router.get('/', function (request, response) {
-    console.log("get request");
-    response.json({
-        data: "hello"
-    });
-});
-*/
-
-router.post('/cross/list', function (request, response) { //운전자가 길찾기 기능을 사용했을 때
-    let data = request.body;
-    let arr = data.crossList;
-    let len = arr.length;
-
-    for (let i = 0; i < len; i++) {
-        let lat = parseFloat(arr[i].lat);
-        let lon = parseFloat(arr[i].lon);
-        let angle = parseFloat(arr[i].angle);
-
-        //console.log(lat);
-        //console.log(lon);
-        //console.log(angle);
-
-        //Crosswalk DB에서 교차로 목록과 비교해서 해당 교차로가 DB에 등록되어있는지 확인
-        //그 후 personalCross DB에 해당 교차로 목록 개인별로 저장
-
-        //DB 목록에 없는 교차로면 arr에서 해당 교차로 삭제
-    }
-
-    response.json({
-      crossList: arr
-    });
 });
 
 router.post('/cross/find', function (request, response) { //운전자가 길찾기 기능을 사용하지 않았을 때
@@ -85,7 +47,15 @@ router.post('/cross/find', function (request, response) { //운전자가 길찾�
                             loc_x2: results[i].loc_x2,
                             loc_y2: results[i].loc_y2,
                             loc_x3: results[i].loc_x3,
-                            loc_y3: results[i].loc_y3
+                            loc_y3: results[i].loc_y3,
+                            cen_x0: results[i].cen_x0,
+                            cen_x1: results[i].cen_x1,
+                            cen_x2: results[i].cen_x2,
+                            cen_x3: results[i].cen_x3,
+                            cen_y0: results[i].cen_y0,
+                            cen_y1: results[i].cen_y1,
+                            cen_y2: results[i].cen_y2,
+                            cen_y3: results[i].cen_y3
                         };
                         cnt++;
                         arr.push(obj);

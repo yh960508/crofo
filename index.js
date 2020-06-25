@@ -5,11 +5,13 @@ let bodyParser = require('body-parser');
 let path = require('path');
 let server = http.createServer(app);
 
-const PORT = 4446;
+const PORT = 8080;
 
 let loginRouter = require('./router/login');
 let mainRouter = require('./router/main');
 let appRouter = require('./router/application');
+
+let appSocket = require('./socket/appSocket')(server);
 
 app.use(bodyParser.urlencoded({
     extended: false

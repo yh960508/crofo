@@ -9,12 +9,14 @@ let hasher = bkfd2Password();
 let passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy;
 
-const mysqlID = 'root';
-const mysqlPW = 'root';
+const host = 'bic4907.diskstation.me'
+const mysqlID = 'capstone';
+const mysqlPW = 'capstone2020';
 const dbName = 'capstone';
 const sessionKey = 'secretkey';
 
 let conn = mysql.createConnection({
+    host: host,
     user: mysqlID,
     password: mysqlPW,
     database: dbName
@@ -25,7 +27,7 @@ router.use(session({
     resave: false,
     saveUninitialized: true,
     store: new MYSQLStore({
-        host: 'localhost',
+        host: host,
         port: 3306,
         user: mysqlID,
         password: mysqlPW,
@@ -58,7 +60,7 @@ router.post('/',
     })
 );
 
-
+/*
 //sing up 
 router.post('/reg', function(request, response) {
     hasher({password:request.body.pw}, function(error, pass, salt, hash) {
@@ -72,7 +74,7 @@ router.post('/reg', function(request, response) {
             if (error) {
                 console.log(error);
             } else {
-                fs.readFile('./webpage/main.html', function(error, data) {
+                fs.readFile('./Web_Page.html', function(error, data) {
                     if(error) {
                         console.log(error);
                     } else {
@@ -84,7 +86,7 @@ router.post('/reg', function(request, response) {
         });
     });
 });
-
+*/
 
 passport.use(new LocalStrategy({
         usernameField: 'id',

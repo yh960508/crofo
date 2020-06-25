@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -13,14 +13,14 @@
     var page10Unit= 0; // 10페이지 단위
 
     $(document).ready(function () {
-      getVideoAmount();
       if(videoNum % 10 == 0){
         pageNum = parseInt(videoNum / 10);
       }
       else{
         pageNum = parseInt(videoNum / 10) + 1;
       }
-      getVideoList(1);
+      getVideoAmount();
+      getVideoList();
     });
 
     function liIntroduce() {
@@ -82,7 +82,6 @@
       }
       if(checkedCount == 4) {
         alert("동영상 최대개수 초과(최대: 4개)");
-        $("#chk"+index).prop("checked",false)
         return;
       }
       checkedList.push(chkbox);
@@ -97,12 +96,12 @@
         url: "/getVideoAmount",
         success: function (data) {
           videoNum = data.amount;
+          pageNum = (videoNum / 10) + 1;
         }
       });
     }
 
     function getVideoList(index) {
-      <!--alert(nowPage + "/" + pageNum + "/" + videoNum);-->
       nowPage = page10Unit*10 + index - 1;
       $.ajax({
         type: "GET",
@@ -113,10 +112,6 @@
             for (let i = 1; i <= len; i++) {
               document.getElementById("dateList" + i).innerHTML = data[i].date;
               document.getElementById("nameList" + i).innerHTML = data[i].name;
-            }
-            for (let i = len + 1; i <= 10; i++) {
-              document.getElementById("dateList" + i).innerHTML = "";
-              document.getElementById("nameList" + i).innerHTML = "";
             }
           } else return;
         }
