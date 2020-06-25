@@ -2,16 +2,16 @@ let express = require('express');
 let router = express.Router();
 let mysql = require('mysql');
 
-const host = 'bic4907.diskstation.me'
-const mysqlID = 'capstone';
-const mysqlPW = 'capstone2020';
-const dbName = 'capstone';
+const HOST = 'bic4907.diskstation.me'
+const MYSQLID = 'capstone';
+const MYSQLPW = 'capstone2020';
+const DBName = 'capstone';
 
 let conn = mysql.createConnection({
-    host: host,
-    user: mysqlID,
-    password: mysqlPW,
-    database: dbName
+    host: HOST,
+    user: MYSQLID,
+    password: MYSQLPW,
+    database: DBName
 });
 
 router.post('/cross/find', function (request, response) { //운전자가 길찾기 기능을 사용하지 않았을 때

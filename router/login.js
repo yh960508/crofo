@@ -9,29 +9,29 @@ let hasher = bkfd2Password();
 let passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy;
 
-const host = 'bic4907.diskstation.me'
-const mysqlID = 'capstone';
-const mysqlPW = 'capstone2020';
-const dbName = 'capstone';
-const sessionKey = 'secretkey';
+const HOST = 'bic4907.diskstation.me'
+const MYSQLID = 'capstone';
+const MYSQLPW = 'capstone2020';
+const DBName = 'capstone';
+const SESSIONKey = 'secretkey';
 
 let conn = mysql.createConnection({
-    host: host,
-    user: mysqlID,
-    password: mysqlPW,
-    database: dbName
+    host: HOST,
+    user: MYSQLID,
+    password: MYSQLPW,
+    database: DBName
 });
 
 router.use(session({
-    secret: sessionKey,
+    secret: SESSIONKey,
     resave: false,
     saveUninitialized: true,
     store: new MYSQLStore({
-        host: host,
+        host: HOST,
         port: 3306,
-        user: mysqlID,
-        password: mysqlPW,
-        database: dbName
+        user: MYSQLID,
+        password: MYSQLPW,
+        database: DBName
     })
 }));
 

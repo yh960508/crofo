@@ -2,17 +2,17 @@ module.exports = function (server) {
     let socketio = require('socket.io');
     let mysql = require('mysql');
 
-    const host = 'bic4907.diskstation.me'
-    const mysqlID = 'capstone';
-    const mysqlPW = 'capstone2020';
-    const dbName = 'capstone';
+    const HOST = 'bic4907.diskstation.me'
+    const MYSQLID = 'capstone';
+    const MYSQLPW = 'capstone2020';
+    const DBName = 'capstone';
 
     let conn = mysql.createConnection({
-        host: host,
-        user: mysqlID,
-        password: mysqlPW,
-        database: dbName
-    });
+        host: HOST,
+        user: MYSQLID,
+        password: MYSQLPW,
+        database: DBName
+    });    
 
     let io = socketio.listen(server);
 
