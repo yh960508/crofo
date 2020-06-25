@@ -51,7 +51,7 @@ router.get('/', function(request, response) {
     }
 });
 
-router.get('/getVideoAmount', function(request, response) {
+router.get('/getVideoAmount', function(request, response) { // 총 비디오의 갯수를 response로 보내줌
     if (!request.user) {
         response.redirect('/login');
     } else {
@@ -69,13 +69,13 @@ router.get('/getVideoAmount', function(request, response) {
     }
 });
 
-router.get('/getVideoList/:page', function(request, response) {
+router.get('/getVideoList/:page', function(request, response) { // 현재 페이지에 해당하는 비디오의 목록을 보내줌
     if (!request.user) {
         response.redirect('/login');
     } else {
         let index = request.params.page;
-        let sql = 'select name, date from video order by date desc limit ' + index + ', ' + 10;
-        conn.query(sql, function (error, results) {
+        let sql = 'select name, date from video order by date desc limit ?, ?';
+        conn.query(sql, [index * 10, 10], function (error, results) {
             if (error) {
                 console.log(error);
             } else {
@@ -106,7 +106,7 @@ router.get('/getVideoList/:page', function(request, response) {
     }
 });
 
-router.post('/loadVideo', function(request, response) {
+router.post('/loadVideo', function(request, response) { // 선택한 비디오들의 상대경로를 보내줌.(DB와 서버가 같은 하드웨어에 존재)
     if (!request.user) {
         response.redirect('/login');
     } else {
